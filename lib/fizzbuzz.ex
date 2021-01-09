@@ -5,14 +5,24 @@ defmodule Fizzbuzz do
     |> handleFileRead()
   end
 
-  def handleFileRead({:ok, result}) do
+  defp handleFileRead({:ok, result}) do
     # "1, 2, 3, 4"
     result
     |> String.split(",")
-    |> Enum.map(fn number -> String.to_integer(number) end)
+    |> Enum.map(&convertAndEvaluateNumbers/1)
   end
 
-  def handleFileRead({:error, reason}) do
+  defp handleFileRead({:error, reason}) do
     "Error reading the file: #{reason}"
   end
+
+  defp convertAndEvaluateNumbers(number) do
+    number |> String.to_integer() |> evaluateNumbers()
+  end
+
+  defp evaluateNumbers(number) when rem(number, 3) == 0 and rem(number, 5) == 0, do: 'FizzBuzz'
+  defp evaluateNumbers(number) when rem(number, 3) == 0, do: 'Fizz'
+  defp evaluateNumbers(number) when rem(number, 5) == 0, do: 'Buzz'
+
+  defp evaluateNumbers(number), do: number
 end
